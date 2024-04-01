@@ -41,7 +41,7 @@ export default function Category({
             className={cx(
               "button",
               "folder-title",
-              targetFolder["title"] === folder.name && "selected"
+              targetFolder.id === folder.id && "selected"
             )}
             key={folder.id}
             onClick={() => {

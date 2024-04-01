@@ -12,20 +12,16 @@ const PASSWD_REG = /(?=.*[0-9])(?=.*[A-Za-z])^.{8,}$/;
 
 const cx = classNames.bind(styles);
 export default function SignUpForm() {
-  const { handleSubmit, setError, control, getValues } =
-    useForm<FormData>({
-      mode: "onBlur",
-    });
+  const { handleSubmit, setError, control, getValues } = useForm<FormData>({
+    mode: "onBlur",
+  });
 
   const router = useRouter();
 
   const onSubmit = async (data: { email: string; password: string }) => {
     const emailCheck = await checkEmail({ email: data.email, setError });
     if (emailCheck) {
-      const result = await postSignUp({
-        email: data.email,
-        password: data.password,
-      });
+      const result = await postSignUp(data);
 
       localStorage.setItem("accessToken", result.accessToken);
       router.push("/folder");

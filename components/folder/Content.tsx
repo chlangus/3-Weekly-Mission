@@ -9,44 +9,45 @@ import { useRouter } from "next/router";
 import TitleBar from "./TitleBar";
 import Category from "./Category";
 import Cards from "../common/Cards";
+import { useQueryClient } from "@tanstack/react-query";
 
 const cx = classNames.bind(styles);
 
 interface Props {
-  searchedLinkList: UserFolderLinkData[];
+  searchedLinkList?: UserFolderLinkData[];
   folderList: UserFolder[];
+  targetFolder: any;
+  setTargetFolder: any;
 }
 
-export default function Content({ searchedLinkList, folderList }: Props) {
-  const router = useRouter();
-  const path = router.asPath;
-  const folderIdAry = path.split("/");
-  const folderId = Number(folderIdAry[folderIdAry.length - 1]) || 0;
-  const [targetFolder, setTargetFolder] = useState({
-    title: "전체",
-    id: folderId,
-  });
-  const [modalState, setModalState, handleModalCancel] = useModal();
+export default function Content({
+  searchedLinkList,
+  folderList,
+  targetFolder,
+  setTargetFolder,
+}: Props) {
+  const queryClient = useQueryClient();
+  const { modalState, setModalState, handleModalCancel } = useModal();
 
   const handleClick = (title: string, id: number) => {
     setTargetFolder({ title, id });
-    if (id === 0) {
-      router.push(`/folder`, `/folder`, { shallow: true });
-    } else {
-      router.push(`/folder`, `/folder/${id}`, { shallow: true });
-    }
+    queryClient.invalidateQueries({ queryKey: ["readFolderLinkList", id] });
+    queryClient.invalidateQueries({ queryKey: ["readLinkList"] });
   };
-  const filteredFolder = folderList?.filter(
-    (data) => data.id === targetFolder["id"] || targetFolder["id"] === 0
-  );
 
+  // 카테고리 누르면 거기있는 아이디를 보내서 카드 띄워주기
   // const data = useMemo(async () => {
   //   const data = await getUserFolderLinkList(String(targetFolder.id));
   //   return data;
   // }, [targetFolder.id]);
   return (
     <section className={cx("content")}>
-      <Modal state={modalState} onClick={handleModalCancel} folderList={[]} link=""/>
+      <Modal
+        state={modalState}
+        onClick={handleModalCancel}
+        folderList={[]}
+        link=""
+      />
       <Category
         handleClick={handleClick}
         folderList={folderList}

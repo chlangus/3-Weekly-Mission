@@ -50,6 +50,7 @@
 }
 
 .modal-input {
+  outline: none;
   display: flex;
   width: 280px;
   padding: 18px 15px;

@@ -13,7 +13,7 @@ export interface FolderData {
   user_id: number;
 }
 // 폴더 정보
-export async function getUserFolder(folderId: string) {
+export async function getUserFolder(folderId: number) {
   const response = await axios.get(`/folders/${folderId}`, {
     headers: {
       Authorization,
@@ -33,9 +33,10 @@ export interface UserData {
   email: string;
   auth_id: string;
 }
+
 // 유저 정보
-export async function getUser(userId: string) {
-  const response = await axios.get(`/users/${userId}`);
+export async function getUser() {
+  const response = await axios.get(`/users`, { headers: { Authorization } });
   if (typeof response.data === "object" && response.data[0]) {
     return response.data[0];
   }
@@ -50,11 +51,26 @@ export interface UserFolder {
   link_count: number;
 }
 // 유저가 가진 폴더 리스트
-export async function getUserFolderList(userId: string) {
-  const response = await axios.get(`/users/${userId}/folders`);
+export async function getFolderList() {
+  const response = await axios.get(`/folders`, { headers: { Authorization } });
   return response.data;
 }
 
+// 폴더 생성
+export async function createFolder(name: string) {
+  const response = await axios.post(
+    "/folders",
+    {
+      name,
+    },
+    {
+      headers: {
+        Authorization,
+      },
+    }
+  );
+  return response.data;
+}
 export interface UserFolderLinkData {
   id: number;
   favorite?: boolean;
@@ -66,7 +82,7 @@ export interface UserFolderLinkData {
 }
 
 // 유저가 가진 폴더의 링크리스트
-export async function getUserFolderLinkList(folderId: string) {
+export async function getUserFolderLinkList(folderId: number) {
   const response = await axios.get(`/folders/${folderId}/links`);
   return response.data;
 }
@@ -78,20 +94,27 @@ export interface UserLinkData {
   image_source: string;
   description: string;
 }
+
 // 유저가 가진 링크 리스트
-export async function getUserLinkList(userId: string) {
-  const response = await axios.get(`/users/${userId}/links`, {
+export async function getLinkList() {
+  const response = await axios.get(`/links`, {
     headers: { Authorization },
   });
   return response.data;
 }
 
+interface SetError {
+  setError: any;
+}
+
 interface PostSignData {
   email: string;
-  password: string;
-  setError: (email: string, object: { type: string; message: string }) => void;
+  password?: string;
 }
-export async function postSignIn({ email, password, setError }: PostSignData) {
+
+type Sign = SetError & PostSignData;
+
+export async function postSignIn({ email, password, setError }: Sign) {
   try {
     const response = await axios.post("/auth/sign-in", {
       email,
@@ -127,7 +150,7 @@ export async function postSignUp({ email, password }: PostSignData) {
   return response.data;
 }
 
-export async function checkEmail({ email, setError }: PostSignData) {
+export async function checkEmail({ email, setError }: Sign) {
   try {
     const response = await axios.post("/users/check-email", { email });
     if (response.status === 200) {

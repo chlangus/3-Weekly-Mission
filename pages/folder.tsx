@@ -2,66 +2,65 @@ import AddLinkBar from "@/components/folder/AddLinkBar";
 import Content from "@/components/folder/Content";
 import SearchBar from "@/components/common/SearchBar";
 import Header from "@/components/common/Header";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import Footer from "@/components/common/Footer";
-import {
-  UserData,
-  UserFolderLinkData,
-  UserFolder,
-  getUser,
-  getUserFolderList,
-  getUserLinkList,
-  getUserFolderLinkList,
-  UserLinkData,
-} from "@/api/api";
-import { USER_ID } from "./shared/[folderId]";
+import { useUserFolderLinkList } from "@/hooks/useUserFolderLinkList";
+import { useLinkList } from "@/hooks/useUserLinkList";
+import { useUser } from "@/hooks/useUser";
+import { useUserFolderList } from "@/hooks/useUserFolderList";
 
-type Props = {
-  user: UserData;
-  folderList: UserFolder[];
-  folderLinkList: UserFolderLinkData[];
-};
-
-export async function getServerSideProps() {
-
-  const [user, folderList, folderLinkList] = await Promise.all([
-    getUser(USER_ID),
-    getUserFolderList(USER_ID),
-    getUserLinkList(USER_ID),
-  ]);
-  return { props: { user, folderList, folderLinkList } };
-}
-
-export default function Folder({
-  user,
-  folderList,
-  folderLinkList: userLinks,
-}: Props) {
+export default function Folder() {
+  const [targetFolder, setTargetFolder] = useState({
+    title: "전체",
+    id: 0,
+  });
+  const userFolderLinkList = useUserFolderLinkList(targetFolder.id);
+  const userLinkList = useLinkList();
+  const user = useUser();
+  const folderList = useUserFolderList();
   const [searchValue, setsearchValue] = useState("");
+
   const handleInputChange = (value: string) => {
     setsearchValue(value);
   };
   const searchedData = useMemo(() => {
-    return userLinks?.filter((item) => {
-      if (
-        item.description?.includes(searchValue) ||
-        item.url?.includes(searchValue) ||
-        item.title?.includes(searchValue)
-      ) {
-        return item;
-      }
-    });
-  }, [userLinks, searchValue]);
+    if (targetFolder.id === 0) {
+      return userLinkList?.filter((item) => {
+        if (
+          item.description?.includes(searchValue) ||
+          item.url?.includes(searchValue) ||
+          item.title?.includes(searchValue)
+        ) {
+          return item;
+        }
+      });
+    } else {
+      return userFolderLinkList?.filter((item) => {
+        if (
+          item.description?.includes(searchValue) ||
+          item.url?.includes(searchValue) ||
+          item.title?.includes(searchValue)
+        ) {
+          return item;
+        }
+      });
+    }
+  }, [searchValue, targetFolder.id, userFolderLinkList, userLinkList]);
   return (
     <>
       <Header
         isSticky
-        profileImageSource={user.image_source}
-        email={user.email}
+        profileImageSource={user?.image_source}
+        email={user?.email}
       />
       <AddLinkBar folderList={folderList} />
       <SearchBar handleInputChange={handleInputChange} />
-      <Content searchedLinkList={searchedData} folderList={folderList}/>
+      <Content
+        targetFolder={targetFolder}
+        setTargetFolder={setTargetFolder}
+        searchedLinkList={searchedData}
+        folderList={folderList}
+      />
       <Footer />
     </>
   );

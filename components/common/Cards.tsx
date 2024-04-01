@@ -4,13 +4,13 @@ import type { UserFolderLinkData } from "@/api/api";
 
 interface Props {
   isFolder: boolean;
-  data: UserFolderLinkData[];
+  data?: UserFolderLinkData[];
 }
 
 export default function Cards({ isFolder, data: folderLinkList }: Props) {
   return (
     <div className={styles["card-container"]}>
-      {folderLinkList.length ? (
+      {folderLinkList?.length ? (
         folderLinkList.map((link) => (
           <Card key={link.id} data={link} folderList={[]} isFolder={isFolder} />
         ))

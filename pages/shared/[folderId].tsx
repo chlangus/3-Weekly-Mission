@@ -4,36 +4,25 @@ import Header from "@/components/common/Header";
 import Banner from "@/components/shared/Banner";
 import SearchBar from "@/components/common/SearchBar";
 import Cards from "@/components/common/Cards";
-import { getUser, getUserFolder, getUserFolderLinkList } from "@/api/api";
-import type { FolderData, UserData, UserFolderLinkData } from "@/api/api";
+import { useUserFolderLinkList } from "@/hooks/useUserFolderLinkList";
+import { useRouter } from "next/router";
+import { useUser } from "@/hooks/useUser";
+import { useUserFolder } from "@/hooks/useUserFolder";
 
-export const USER_ID = "1";
+export const USER_ID = 1;
 
-export async function getServerSideProps(context: {
-  query: { folderId: string };
-}) {
-  const { folderId } = context.query;
-  const [folder, user, folderLinkList] = await Promise.all([
-    getUserFolder(folderId),
-    getUser(USER_ID),
-    getUserFolderLinkList(folderId),
-  ]);
-  return { props: { folder, user, folderLinkList } };
-}
-
-export default function Shared({
-  folder: folderData,
-  user,
-  folderLinkList,
-}: {
-  folder: FolderData;
-  user: UserData;
-  folderLinkList: UserFolderLinkData[];
-}) {
+export default function Shared() {
+  const {
+    query: { folderId },
+  } = useRouter();
   const [searchValue, setsearchValue] = useState("");
   const handleInputChange = (value: string) => {
     setsearchValue(value);
   };
+
+  const folderLinkList = useUserFolderLinkList(Number(folderId));
+  const user = useUser();
+  const folderData = useUserFolder(Number(folderId));
 
   const searchedData = useMemo(() => {
     return folderLinkList?.filter((item) => {
@@ -46,9 +35,10 @@ export default function Shared({
       }
     });
   }, [folderLinkList, searchValue]);
+
   return (
     <>
-      <Header profileImageSource={user.image_source} email={user.email} />
+      <Header profileImageSource={user?.image_source} email={user?.email} />
       <Banner folder={folderData} user={user} />
       <SearchBar handleInputChange={handleInputChange} />
       <Cards data={searchedData} isFolder={false} />
