@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 export const useLinkList = () => {
   const { data } = useQuery<UserLinkData[]>({
     queryKey: ["readLinkList"],
-    queryFn: () => getLinkList(),
+    queryFn: getLinkList,
   });
 
   return data;

@@ -24,7 +24,6 @@ export default function index() {
     queryKey: ["readFolderList"],
     queryFn: () => getFolderList(),
   });
-  console.log(result);
   return (
     <>
       <h1>Shared Folders</h1>
@@ -47,7 +46,6 @@ export default function index() {
           </Link>
         )
       )}
-
       <br />
       <Link href="/folder">
         <h1>folder Page</h1>

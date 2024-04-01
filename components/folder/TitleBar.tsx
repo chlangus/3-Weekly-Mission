@@ -56,6 +56,7 @@ export default function TitleBar({ targetFolder, setModalState }: Props) {
                 state: true,
                 target: "삭제",
                 folderName: targetFolder["title"],
+                folderId: targetFolder["id"],
               })
             }
           >

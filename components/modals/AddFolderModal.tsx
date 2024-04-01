@@ -1,16 +1,15 @@
 import { useState } from "react";
 import styles from "./Modal.module.css";
 import { useCreateFolder } from "@/hooks/useCreateFolder";
-import useModal from "@/hooks/useModal";
 
-export default function AddFolderModal() {
-  const { setModalState } = useModal();
+export default function AddFolderModal({ cancelModal }: { cancelModal: any }) {
   const [inputValue, setInputValue] = useState("");
   const createFolderMutate = useCreateFolder();
+
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     createFolderMutate(inputValue);
-    setModalState((prev: any) => ({ ...prev, state: false }));
+    cancelModal();
   };
   return (
     <>

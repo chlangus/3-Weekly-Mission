@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 export const useUserFolderList = () => {
   const { data } = useQuery({
     queryKey: ["readFolderList"],
-    queryFn: () => getFolderList(),
+    queryFn: getFolderList,
   });
 
   return data;

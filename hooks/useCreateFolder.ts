@@ -6,7 +6,9 @@ export const useCreateFolder = () => {
   const { mutate } = useMutation<void, Error, string>({
     mutationFn: (name) => createFolder(name),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["readFolderList"] }),
+      queryClient.invalidateQueries(
+        { queryKey: ["readFolderList"] },
+      ),
   });
   return mutate;
 };

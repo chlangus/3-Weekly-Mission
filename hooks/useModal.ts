@@ -12,18 +12,16 @@ type target =
 export interface Modal {
   state?: boolean;
   target?: target;
+  folderId?: number;
   folderName?: string;
   url?: string;
 }
 
-export default function useModal(): [
-  Modal,
-  Dispatch<SetStateAction<Modal>>,
-  () => void
-] {
+export default function useModal() {
   const [modalState, setModalState] = useState<Modal>({
     state: false,
     target: "",
+    folderId: 0,
     folderName: "",
     url: "",
   });
@@ -33,5 +31,5 @@ export default function useModal(): [
       state: false,
     });
 
-  return [modalState, setModalState, handleModalCancel];
+  return { modalState, setModalState, handleModalCancel };
 }

@@ -2,7 +2,7 @@ import AddLinkBar from "@/components/folder/AddLinkBar";
 import Content from "@/components/folder/Content";
 import SearchBar from "@/components/common/SearchBar";
 import Header from "@/components/common/Header";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Footer from "@/components/common/Footer";
 import { useUserFolderLinkList } from "@/hooks/useUserFolderLinkList";
 import { useLinkList } from "@/hooks/useUserLinkList";

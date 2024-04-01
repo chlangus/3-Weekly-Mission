@@ -1,3 +1,5 @@
+"use client";
+
 import modalCloseIcon from "@/public/modal_close_icon.svg";
 import styles from "./Modal.module.css";
 import Image from "next/image";
@@ -33,7 +35,7 @@ interface Props {
 
 export default function Modal({ state, onClick, link, folderList }: Props) {
   if (typeof window === "undefined") return <></>;
-
+  
   const cancelModal = (e: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
@@ -43,48 +45,45 @@ export default function Modal({ state, onClick, link, folderList }: Props) {
   };
 
   return createPortal(
-    <>
-      {state["state"] && (
-        <>
-          <div className={cx("modal-background")} onClick={cancelModal} />
-          <div className={cx("modal-container")}>
-            <button className={cx("modal-close-btn")} onClick={cancelModal}>
-              <Image
-                className={cx("modal-close-icon")}
-                src={modalCloseIcon}
-                alt="modal-close-Image"
-              />
-            </button>
-            <Switch>
-              <Case condition={state["target"] === FOLDER_NAME.FOLDER_SHARE}>
-                <ShareModal state={state} />
-              </Case>
-              <Case condition={state["target"] === FOLDER_NAME.FOLDER_UPDATE}>
-                <NameChangeModal state={state} />
-              </Case>
-              <Case condition={state["target"] === FOLDER_NAME.FOLDER_DELETE}>
-                <FolderDeleteModal state={state} />
-              </Case>
-              <Case condition={state["target"] === FOLDER_NAME.FOLDER_ADD}>
-                {" "}
-                <AddFolderModal />
-              </Case>
-              <Case condition={state["target"] === FOLDER_NAME.LINK_DELETE}>
-                <LinkDeleteModal state={state} />
-              </Case>
-              <Case
-                condition={
-                  state["target"] === FOLDER_NAME.LINK_ADD ||
-                  FOLDER_NAME.LINK_ADD2
-                }
-              >
-                <AddLinkModal state={state} data={folderList} link={link} />
-              </Case>
-            </Switch>
-          </div>
-        </>
-      )}
-    </>,
+    state.state && (
+      <>
+        <div className={cx("modal-background")} onClick={cancelModal} />
+        <div className={cx("modal-container")}>
+          <button className={cx("modal-close-btn")} onClick={cancelModal}>
+            <Image
+              className={cx("modal-close-icon")}
+              src={modalCloseIcon}
+              alt="modal-close-Image"
+            />
+          </button>
+          <Switch>
+            <Case condition={state["target"] === FOLDER_NAME.FOLDER_SHARE}>
+              <ShareModal state={state} />
+            </Case>
+            <Case condition={state["target"] === FOLDER_NAME.FOLDER_UPDATE}>
+              <NameChangeModal state={state} />
+            </Case>
+            <Case condition={state["target"] === FOLDER_NAME.FOLDER_DELETE}>
+              <FolderDeleteModal state={state} cancelModal={cancelModal}/>
+            </Case>
+            <Case condition={state["target"] === FOLDER_NAME.FOLDER_ADD}>
+              <AddFolderModal cancelModal={cancelModal} />
+            </Case>
+            <Case condition={state["target"] === FOLDER_NAME.LINK_DELETE}>
+              <LinkDeleteModal state={state} />
+            </Case>
+            <Case
+              condition={
+                state["target"] === FOLDER_NAME.LINK_ADD ||
+                FOLDER_NAME.LINK_ADD2
+              }
+            >
+              <AddLinkModal state={state} data={folderList} link={link} />
+            </Case>
+          </Switch>
+        </div>
+      </>
+    ),
     document.body
   );
 }

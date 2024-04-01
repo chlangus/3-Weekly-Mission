@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function AddLinkBar({ folderList }: Props) {
-  const [modalState, setModalState, handleModalCancel] = useModal();
+  const { modalState, setModalState, handleModalCancel } = useModal();
   const [inputValue, setInputValue] = useState("");
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) =>

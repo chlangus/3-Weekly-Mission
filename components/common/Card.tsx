@@ -27,7 +27,7 @@ export default function Card({
   const timeAgo = calculateElapsedTimeSinceCreation(created_at);
   const imageUrl = image_source || null;
   const [popoverState, setPopoverState] = useState(false);
-  const [modalState, setModalState, handleModalCancel] = useModal();
+  const {modalState, setModalState, handleModalCancel} = useModal();
   const [isHover, setIsHover] = useState(false);
 
   return (

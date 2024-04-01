@@ -3,7 +3,7 @@ import axios from "./axios";
 
 //테스트 하려고 임시로 저장해놨습니다.
 const Authorization =
-  "Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6IktLNE05TGFmMXkzWEI0M0kiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzEwMDQzNzg2LCJpYXQiOjE3MDk0Mzg5ODYsImlzcyI6Imh0dHBzOi8vanB2ZG9weWdibHJlZnpvbmV2ZnEuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6Ijk1NTgwMWE4LTg1YzUtNDY3Mi1iNzI5LTYxMmU2NDZhNjQwYSIsImVtYWlsIjoidGVzdEBjb2RlaXQuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3MDk0Mzg5ODZ9XSwic2Vzc2lvbl9pZCI6ImI2MDczMTc3LWJiNjEtNDdhNS1iYTc1LWU3ZmE4NDA0MWJjNCJ9.p5Pw2-hlSU5I1KblhlVdbo-AAm9dlehittV57c3C01o";
+  "Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6IktLNE05TGFmMXkzWEI0M0kiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzEyNTY2NzYzLCJpYXQiOjE3MTE5NjE5NjMsImlzcyI6Imh0dHBzOi8vanB2ZG9weWdibHJlZnpvbmV2ZnEuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjkwZWIzZDg3LTg0ZmUtNDg4ZC05ZmE3LTBlM2JjZmZhNjNlNSIsImVtYWlsIjoidGVzdG1vb0Bjb2RlaXQuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6InRlc3Rtb29AY29kZWl0LmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI5MGViM2Q4Ny04NGZlLTQ4OGQtOWZhNy0wZTNiY2ZmYTYzZTUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTcxMTk2MTk2M31dLCJzZXNzaW9uX2lkIjoiYzI0MGM0Y2EtYzcxMS00NjlmLTk4NjAtNDQ3MDBkZTRhNzhiIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.lUQfycOiSL7bQXLpEIN3i6JOySD-qjYDDvUs_6XO8As";
 
 export interface FolderData {
   id: number;
@@ -71,6 +71,14 @@ export async function createFolder(name: string) {
   );
   return response.data;
 }
+
+export async function deleteFolder(folderId: number) {
+  const response = await axios.delete(`/folders/${folderId}`, {
+    headers: { Authorization },
+  });
+  return response.data;
+}
+
 export interface UserFolderLinkData {
   id: number;
   favorite?: boolean;
@@ -94,7 +102,6 @@ export interface UserLinkData {
   image_source: string;
   description: string;
 }
-
 // 유저가 가진 링크 리스트
 export async function getLinkList() {
   const response = await axios.get(`/links`, {
