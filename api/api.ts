@@ -72,10 +72,28 @@ export async function createFolder(name: string) {
   return response.data;
 }
 
+// 폴더 삭제
 export async function deleteFolder(folderId: number) {
   const response = await axios.delete(`/folders/${folderId}`, {
     headers: { Authorization },
   });
+  return response.data;
+}
+
+// 링크 생성
+export async function createLink(url: string, folderId: number) {
+  const response = await axios.post(
+    "/links",
+    {
+      url,
+      folderId,
+    },
+    {
+      headers: {
+        Authorization,
+      },
+    }
+  );
   return response.data;
 }
 
