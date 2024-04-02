@@ -3,6 +3,7 @@ import styles from "./Modal.module.css";
 import classNames from "classnames/bind";
 import { Modal } from "@/hooks/useModal";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const cx = classNames.bind(styles);
 
@@ -12,9 +13,11 @@ interface Props {
   link: string;
 }
 export default function AddLinkModal({ state, data: folderList, link }: Props) {
+  const queryClient = useQueryClient();
   const [folderId, setFolderId] = useState(0);
   const handleClick = () => {
     createLink(link, folderId);
+    queryClient.refetchQueries();
   };
   return (
     <>

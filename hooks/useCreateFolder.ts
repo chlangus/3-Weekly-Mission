@@ -1,14 +1,12 @@
 import { createFolder } from "@/api/api";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
 export const useCreateFolder = () => {
+  const queryClient = useQueryClient();
   const { mutate } = useMutation<void, Error, string>({
     mutationFn: (name) => createFolder(name),
     onSuccess: () =>
-      queryClient.invalidateQueries(
-        { queryKey: ["readFolderList"] },
-      ),
+      queryClient.invalidateQueries({ queryKey: ["readFolderList"] }),
   });
   return mutate;
 };

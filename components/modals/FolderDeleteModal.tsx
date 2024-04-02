@@ -1,8 +1,7 @@
 import { Modal } from "@/hooks/useModal";
 import styles from "./Modal.module.css";
 import classNames from "classnames/bind";
-import { deleteFolder } from "@/api/api";
-import { QueryClient } from "@tanstack/react-query";
+import { useDeleteFolder } from "@/hooks/useDeleteFolder";
 
 const cx = classNames.bind(styles);
 
@@ -11,12 +10,10 @@ interface Props {
   cancelModal: any;
 }
 
-const queryClient = new QueryClient();
-
 export default function FolderDeleteModal({ state, cancelModal }: Props) {
+  const deleteMutate = useDeleteFolder();
   const handleClick = () => {
-    deleteFolder(Number(state.folderId));
-    queryClient.invalidateQueries({ queryKey: ["readFolderList"] });
+    deleteMutate(Number(state.folderId));
     cancelModal();
   };
   return (
