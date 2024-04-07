@@ -87,6 +87,12 @@ export async function deleteLink(linkId: number) {
   return response.data;
 }
 
+// 링크 즐겨찾기
+export async function bookmarkLink(linkId: number, favorite: boolean) {
+  const response = await axiosInstance.put(`/links/${linkId}`, { favorite });
+  return response.data;
+}
+
 export interface UserFolderLinkData {
   id: number;
   favorite?: boolean;
@@ -140,7 +146,6 @@ export async function postSignIn({ email, password, setError }: Sign) {
     }
   } catch (e) {
     if (e instanceof AxiosError) {
-
       if (e.response?.status === 400) {
         setError("email", {
           type: "custom",

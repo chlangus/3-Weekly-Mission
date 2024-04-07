@@ -1,6 +1,6 @@
 import styles from "./Cards.module.css";
 import Card from "./Card";
-import type { UserFolder, UserFolderLinkData } from "@/api/api";
+import type { UserFolderLinkData } from "@/api/api";
 import { Dispatch, SetStateAction } from "react";
 import { ModalData } from "@/hooks/useModal";
 

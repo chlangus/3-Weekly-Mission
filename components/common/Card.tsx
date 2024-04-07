@@ -5,13 +5,16 @@ import { Dispatch, SetStateAction, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import classNames from "classnames/bind";
-import type { UserLinkData } from "@/api/api";
+import type { UserFolderLinkData } from "@/api/api";
 import type { ModalData } from "@/hooks/useModal";
+import star from "@/public/star.svg";
+import favoriteStar from "@/public/favorite-star.svg";
+import { useBookmarkLink } from "@/hooks/useBookmarkLink";
 
 const cx = classNames.bind(styles);
 
 interface Props {
-  data: UserLinkData;
+  data: UserFolderLinkData;
   isFolder: boolean;
   setModalState: Dispatch<SetStateAction<ModalData>>;
 }
@@ -28,12 +31,21 @@ export default function Card({
     image_source,
     title,
     id: cardId,
+    favorite,
   } = folderLink;
+  const [isFavorite, setIsFavorite] = useState(favorite);
   const formattedDate = formatDate(created_at);
   const timeAgo = calculateElapsedTimeSinceCreation(created_at);
   const imageUrl = image_source || null;
   const [popoverState, setPopoverState] = useState(false);
   const [isHover, setIsHover] = useState(false);
+  const bookmarkMutate = useBookmarkLink();
+
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    setIsFavorite(!isFavorite);
+    bookmarkMutate({ linkId: cardId, favorite: !isFavorite });
+  };
   return (
     <>
       <Link
@@ -56,6 +68,19 @@ export default function Card({
                 alt={title}
               />
             </div>
+            <button
+              type="button"
+              className={cx("star")}
+              onMouseEnter={() => {
+                setIsHover(false);
+              }}
+              onMouseLeave={() => {
+                setIsHover(true);
+              }}
+              onClick={handleClick}
+            >
+              <Image fill src={isFavorite ? favoriteStar : star} alt="별모양" />
+            </button>
           </div>
           <div className={cx("mention-wrapper")}>
             <p className={cx("time-and-kebob-wrapper")}>
