@@ -1,18 +1,19 @@
 import calculateElapsedTimeSinceCreation from "../../utils/calculateElapsedTimeSinceCreation";
 import formatDate from "../../utils/formatDate";
 import styles from "./Card.module.css";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import classNames from "classnames/bind";
 import type { UserLinkData } from "@/api/api";
+import type { ModalData } from "@/hooks/useModal";
 
 const cx = classNames.bind(styles);
 
 interface Props {
   data: UserLinkData;
   isFolder: boolean;
-  setModalState: any;
+  setModalState: Dispatch<SetStateAction<ModalData>>;
 }
 
 export default function Card({

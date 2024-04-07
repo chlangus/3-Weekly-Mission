@@ -1,11 +1,13 @@
 import styles from "./Cards.module.css";
 import Card from "./Card";
 import type { UserFolder, UserFolderLinkData } from "@/api/api";
+import { Dispatch, SetStateAction } from "react";
+import { ModalData } from "@/hooks/useModal";
 
 interface Props {
   isFolder: boolean;
   data?: UserFolderLinkData[];
-  setModalState: any;
+  setModalState: Dispatch<SetStateAction<ModalData>>;
 }
 
 export default function Cards({ isFolder, data: folderLinkList, setModalState }: Props) {

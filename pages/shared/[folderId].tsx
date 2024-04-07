@@ -41,7 +41,7 @@ export default function Shared() {
       <Header profileImageSource={user?.image_source} email={user?.email} />
       <Banner folder={folderData} user={user} />
       <SearchBar handleInputChange={handleInputChange} />
-      <Cards data={searchedData} isFolder={false} />
+      <Cards data={searchedData} isFolder={false} setModalState={Object} />
       <Footer />
     </>
   );

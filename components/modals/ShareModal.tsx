@@ -4,12 +4,12 @@ import kakao from "@/public/kakao_share.svg";
 import facebook from "@/public/facebook_share.svg";
 import linkIcon from "@/public/link.svg";
 import classNames from "classnames/bind";
-import { Modal } from "@/hooks/useModal";
+import { ModalData } from "@/hooks/useModal";
 
 const cx = classNames.bind(styles);
 
 interface Props {
-  state: Modal;
+  state: ModalData;
 }
 export default function ShareModal({ state }: Props) {
   // 호스트주소/shared?user={현재 로그인 중인 유저ID}&folder={현재 열려있는 폴더ID}
