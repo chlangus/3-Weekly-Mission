@@ -1,7 +1,15 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "https://bootcamp-api.codeit.kr/api/linkbrary/v1",
 });
 
+axiosInstance.interceptors.request.use((config) => {
+  const token =
+    "eyJhbGciOiJIUzI1NiIsImtpZCI6IktLNE05TGFmMXkzWEI0M0kiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzEyNTY2NzYzLCJpYXQiOjE3MTE5NjE5NjMsImlzcyI6Imh0dHBzOi8vanB2ZG9weWdibHJlZnpvbmV2ZnEuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjkwZWIzZDg3LTg0ZmUtNDg4ZC05ZmE3LTBlM2JjZmZhNjNlNSIsImVtYWlsIjoidGVzdG1vb0Bjb2RlaXQuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6InRlc3Rtb29AY29kZWl0LmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI5MGViM2Q4Ny04NGZlLTQ4OGQtOWZhNy0wZTNiY2ZmYTYzZTUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTcxMTk2MTk2M31dLCJzZXNzaW9uX2lkIjoiYzI0MGM0Y2EtYzcxMS00NjlmLTk4NjAtNDQ3MDBkZTRhNzhiIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.lUQfycOiSL7bQXLpEIN3i6JOySD-qjYDDvUs_6XO8As";
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 export default axiosInstance;
