@@ -1,13 +1,11 @@
-import useModal from "../../hooks/useModal";
 import calculateElapsedTimeSinceCreation from "../../utils/calculateElapsedTimeSinceCreation";
 import formatDate from "../../utils/formatDate";
 import styles from "./Card.module.css";
 import { useState } from "react";
-import Modal from "../modals/Modal";
 import Link from "next/link";
 import Image from "next/image";
 import classNames from "classnames/bind";
-import type { UserFolder, UserLinkData } from "@/api/api";
+import type { UserLinkData } from "@/api/api";
 
 const cx = classNames.bind(styles);
 
@@ -85,6 +83,7 @@ export default function Card({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
+                    setPopoverState(false);
                     setModalState({
                       state: true,
                       target: "삭제하기",
@@ -100,6 +99,7 @@ export default function Card({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
+                    setPopoverState(false);
                     setModalState({ state: true, target: "폴더에 추가", url });
                   }}
                 >

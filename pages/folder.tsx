@@ -2,14 +2,16 @@ import AddLinkBar from "@/components/folder/AddLinkBar";
 import Content from "@/components/folder/Content";
 import SearchBar from "@/components/common/SearchBar";
 import Header from "@/components/common/Header";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Footer from "@/components/common/Footer";
 import { useUserFolderLinkList } from "@/hooks/useUserFolderLinkList";
 import { useLinkList } from "@/hooks/useUserLinkList";
 import { useUser } from "@/hooks/useUser";
 import { useUserFolderList } from "@/hooks/useUserFolderList";
+import { useRouter } from "next/router";
 
 export default function Folder() {
+  const router = useRouter();
   const [targetFolder, setTargetFolder] = useState({
     title: "전체",
     id: 0,
@@ -45,6 +47,12 @@ export default function Folder() {
       });
     }
   }, [searchValue, targetFolder.id, userFolderLinkList, userLinkList]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) router.push("signin");
+  }, [router]);
   return (
     <>
       <Header

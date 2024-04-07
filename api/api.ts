@@ -1,5 +1,5 @@
+import axiosInstance from "./axios";
 import { AxiosError } from "axios";
-import axios from "./axios";
 
 //테스트 하려고 임시로 저장해놨습니다.
 
@@ -12,7 +12,7 @@ export interface FolderData {
 }
 // 폴더 정보
 export async function getUserFolder(folderId: number) {
-  const response = await axios.get(`/folders/${folderId}`);
+  const response = await axiosInstance.get(`/folders/${folderId}`);
   if (typeof response.data === "object" && response.data[0])
     return response.data[0];
 
@@ -30,7 +30,7 @@ export interface UserData {
 
 // 유저 정보
 export async function getUser() {
-  const response = await axios.get(`/users`);
+  const response = await axiosInstance.get(`/users`);
   if (typeof response.data === "object" && response.data[0]) {
     return response.data[0];
   }
@@ -47,13 +47,13 @@ export interface UserFolder {
 
 // 유저가 가진 폴더 리스트
 export async function getFolderList() {
-  const response = await axios.get(`/folders`);
+  const response = await axiosInstance.get(`/folders`);
   return response.data;
 }
 
 // 폴더 생성
 export async function createFolder(name: string) {
-  const response = await axios.post("/folders", {
+  const response = await axiosInstance.post("/folders", {
     name,
   });
   return response.data;
@@ -61,20 +61,20 @@ export async function createFolder(name: string) {
 
 // 폴더 삭제
 export async function deleteFolder(folderId: number) {
-  const response = await axios.delete(`/folders/${folderId}`);
+  const response = await axiosInstance.delete(`/folders/${folderId}`);
   return response.data;
 }
 
 // 폴더 이름 변경
 export async function updateFolder(folderId?: number, name?: string) {
-  const response = await axios.put(`/folders/${folderId}`, {
+  const response = await axiosInstance.put(`/folders/${folderId}`, {
     name,
   });
   return response.data;
 }
 // 링크 생성
 export async function createLink(url: string, folderId: number) {
-  const response = await axios.post("/links", {
+  const response = await axiosInstance.post("/links", {
     url,
     folderId,
   });
@@ -83,7 +83,7 @@ export async function createLink(url: string, folderId: number) {
 
 // 링크 삭제
 export async function deleteLink(linkId: number) {
-  const response = await axios.delete(`/links/${linkId}`);
+  const response = await axiosInstance.delete(`/links/${linkId}`);
   return response.data;
 }
 
@@ -99,7 +99,7 @@ export interface UserFolderLinkData {
 
 // 유저가 가진 폴더의 링크리스트
 export async function getUserFolderLinkList(folderId: number) {
-  const response = await axios.get(`/folders/${folderId}/links`);
+  const response = await axiosInstance.get(`/folders/${folderId}/links`);
   return response.data;
 }
 export interface UserLinkData {
@@ -112,7 +112,7 @@ export interface UserLinkData {
 }
 // 유저가 가진 링크 리스트
 export async function getLinkList() {
-  const response = await axios.get(`/links`);
+  const response = await axiosInstance.get(`/links`);
   return response.data;
 }
 
@@ -129,16 +129,17 @@ type Sign = SetError & PostSignData;
 
 export async function postSignIn({ email, password, setError }: Sign) {
   try {
-    const response = await axios.post("/auth/sign-in", {
+    const response = await axiosInstance.post("/auth/sign-in", {
       email,
       password,
     });
     if (response.status === 200) {
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
       return response.data;
     }
   } catch (e) {
     if (e instanceof AxiosError) {
-      console.error(e.message);
 
       if (e.response?.status === 400) {
         setError("email", {
@@ -156,7 +157,7 @@ export async function postSignIn({ email, password, setError }: Sign) {
 }
 
 export async function postSignUp({ email, password }: PostSignData) {
-  const response = await axios.post("/auth/sign-up", {
+  const response = await axiosInstance.post("/auth/sign-up", {
     email,
     password,
   });
@@ -165,7 +166,7 @@ export async function postSignUp({ email, password }: PostSignData) {
 
 export async function checkEmail({ email, setError }: Sign) {
   try {
-    const response = await axios.post("/users/check-email", { email });
+    const response = await axiosInstance.post("/users/check-email", { email });
     if (response.status === 200) {
       return true;
     }
