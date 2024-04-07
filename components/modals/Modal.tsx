@@ -29,26 +29,22 @@ enum FOLDER_NAME {
 
 interface Props {
   state: ModalData;
-  setModalState: Dispatch<SetStateAction<ModalData>>;
+  setModalState?: Dispatch<SetStateAction<ModalData>>;
   onClick: () => void;
-  link: string;
   folderList: UserFolder[];
+  setTargetFolder?: any;
 }
 
 export default function Modal({
   state,
   setModalState,
   onClick,
-  link,
   folderList,
+  setTargetFolder,
 }: Props) {
   if (typeof window === "undefined") return <></>;
 
-  const cancelModal = (e: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+  const cancelModal = () => {
     onClick();
   };
 
@@ -69,16 +65,20 @@ export default function Modal({
               <ShareModal state={state} />
             </Case>
             <Case condition={state["target"] === FOLDER_NAME.FOLDER_UPDATE}>
-              <NameChangeModal state={state} />
+              <NameChangeModal
+                state={state}
+                setTargetFolder={setTargetFolder}
+                cancelModal={cancelModal}
+              />
             </Case>
             <Case condition={state["target"] === FOLDER_NAME.FOLDER_DELETE}>
-              <FolderDeleteModal state={state} setModalState={setModalState} />
+              <FolderDeleteModal state={state} cancelModal={cancelModal} />
             </Case>
             <Case condition={state["target"] === FOLDER_NAME.FOLDER_ADD}>
               <AddFolderModal cancelModal={cancelModal} />
             </Case>
             <Case condition={state["target"] === FOLDER_NAME.LINK_DELETE}>
-              <LinkDeleteModal state={state} />
+              <LinkDeleteModal state={state} cancelModal={cancelModal} />
             </Case>
             <Case
               condition={
@@ -90,7 +90,6 @@ export default function Modal({
                 setModalState={setModalState}
                 state={state}
                 data={folderList}
-                link={link}
               />
             </Case>
           </Switch>

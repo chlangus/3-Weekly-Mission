@@ -41,8 +41,8 @@ export default function Content({
         state={modalState}
         setModalState={setModalState}
         onClick={handleModalCancel}
-        folderList={[]}
-        link=""
+        folderList={folderList}
+        setTargetFolder={setTargetFolder}
       />
       <Category
         handleClick={handleClick}
@@ -51,7 +51,11 @@ export default function Content({
         targetFolder={targetFolder}
       />
       <TitleBar setModalState={setModalState} targetFolder={targetFolder} />
-      <Cards data={searchedLinkList} isFolder={true} />
+      <Cards
+        data={searchedLinkList}
+        isFolder={true}
+        setModalState={setModalState}
+      />
     </section>
   );
 }

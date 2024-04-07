@@ -24,7 +24,6 @@ export default function AddLinkBar({ folderList }: Props) {
         state={modalState}
         setModalState={setModalState}
         onClick={handleModalCancel}
-        link={inputValue}
         folderList={folderList}
       />
       <div className={cx("add-link-form")}>
@@ -36,7 +35,7 @@ export default function AddLinkBar({ folderList }: Props) {
         <button
           className={cx("add-btn")}
           onClick={() => {
-            setModalState({ state: true, target: "추가하기" });
+            setModalState({ state: true, target: "추가하기", url: inputValue });
           }}
         >
           추가하기

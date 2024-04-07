@@ -2,7 +2,10 @@ import { useState } from "react";
 import styles from "./Modal.module.css";
 import { useCreateFolder } from "@/hooks/useCreateFolder";
 
-export default function AddFolderModal({ cancelModal }: { cancelModal: any }) {
+interface Props {
+  cancelModal: () => void;
+}
+export default function AddFolderModal({ cancelModal }: Props) {
   const [inputValue, setInputValue] = useState("");
   const createFolderMutate = useCreateFolder();
 

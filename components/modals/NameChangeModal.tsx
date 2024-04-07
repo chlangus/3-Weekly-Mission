@@ -8,14 +8,22 @@ const cx = classNames.bind(styles);
 
 interface Props {
   state: ModalData;
+  cancelModal: () => void;
+  setTargetFolder: any;
 }
 
-export default function NameChangeModal({ state }: Props) {
+export default function NameChangeModal({
+  state,
+  cancelModal,
+  setTargetFolder,
+}: Props) {
   const [inputValue, setInputValue] = useState(state["folderName"]);
   const changeFolderNameMutate = useChangeFolderName();
 
   const handleClick = () => {
     changeFolderNameMutate({ folderId: state.folderId, name: inputValue });
+    setTargetFolder((prev: any) => ({ ...prev, title: inputValue }));
+    cancelModal();
   };
   return (
     <>

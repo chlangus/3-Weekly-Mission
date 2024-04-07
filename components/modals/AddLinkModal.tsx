@@ -10,27 +10,25 @@ const cx = classNames.bind(styles);
 interface Props {
   state: ModalData;
   data: UserFolder[];
-  link: string;
-  setModalState: Dispatch<SetStateAction<ModalData>>;
+  setModalState?: Dispatch<SetStateAction<ModalData>>;
 }
 export default function AddLinkModal({
   state,
   data: folderList,
-  link,
   setModalState,
 }: Props) {
   const addLinkMutation = useAddLink();
   const [folderId, setFolderId] = useState(0);
   const handleClick = () => {
-    addLinkMutation({ link, folderId });
-    setModalState((prev) => ({ ...prev, state: false }));
+    addLinkMutation({ link: String(state.url), folderId });
+    setModalState && setModalState((prev) => ({ ...prev, state: false }));
   };
   return (
     <>
       <h2 className={cx("modal-title", "having-folder-and-link")}>
         폴더에 추가
       </h2>
-      <h3 className={cx("link-and-folder-name")}>{state["url"] ?? link}</h3>
+      <h3 className={cx("link-and-folder-name")}>{state["url"] ?? state.url}</h3>
       <div className={cx("folder-item-wrapper")}>
         {folderList?.map((folder) => (
           <button

@@ -44,6 +44,7 @@ export interface UserFolder {
   name: string;
   link_count: number;
 }
+
 // 유저가 가진 폴더 리스트
 export async function getFolderList() {
   const response = await axios.get(`/folders`);
@@ -77,6 +78,12 @@ export async function createLink(url: string, folderId: number) {
     url,
     folderId,
   });
+  return response.data;
+}
+
+// 링크 삭제
+export async function deleteLink(linkId: number) {
+  const response = await axios.delete(`/links/${linkId}`);
   return response.data;
 }
 

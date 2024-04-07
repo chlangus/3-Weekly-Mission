@@ -17,7 +17,10 @@ interface Props {
   setModalState: Dispatch<SetStateAction<ModalData>>;
 }
 
-export default function TitleBar({ targetFolder, setModalState }: Props) {
+export default function TitleBar({
+  targetFolder,
+  setModalState,
+}: Props) {
   return (
     <div className={cx("selected-category")}>
       <h2 className={cx("h2")}>{targetFolder["title"]}</h2>

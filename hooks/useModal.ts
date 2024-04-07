@@ -14,6 +14,7 @@ export interface ModalData {
   target?: target;
   folderId?: number;
   folderName?: string;
+  cardId?: string;
   url?: string;
 }
 
@@ -23,6 +24,7 @@ export default function useModal() {
     target: "",
     folderId: 0,
     folderName: "",
+    cardId: "",
     url: "",
   });
 

@@ -13,28 +13,33 @@ const cx = classNames.bind(styles);
 
 interface Props {
   data: UserLinkData;
-  folderList: UserFolder[];
   isFolder: boolean;
+  setModalState: any;
 }
 
 export default function Card({
   data: folderLink,
-  folderList,
   isFolder,
+  setModalState,
 }: Props) {
-  const { created_at, url, description, image_source, title } = folderLink;
+  const {
+    created_at,
+    url,
+    description,
+    image_source,
+    title,
+    id: cardId,
+  } = folderLink;
   const formattedDate = formatDate(created_at);
   const timeAgo = calculateElapsedTimeSinceCreation(created_at);
   const imageUrl = image_source || null;
   const [popoverState, setPopoverState] = useState(false);
-  const {modalState, setModalState, handleModalCancel} = useModal();
   const [isHover, setIsHover] = useState(false);
-
   return (
     <>
       <Link
         className={cx("card", { "card-hover": isHover })}
-        href={url}
+        href={`https:${url}`}
         target="_blank"
         onMouseEnter={() => {
           setIsHover(true);
@@ -44,12 +49,6 @@ export default function Card({
         }}
       >
         <>
-          <Modal
-            link=""
-            state={modalState}
-            onClick={handleModalCancel}
-            folderList={folderList}
-          />
           <div className={cx("card-img-container")}>
             <div className={cx("card-img", { "no-img": !imageUrl })}>
               <Image
@@ -86,7 +85,12 @@ export default function Card({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    setModalState({ state: true, target: "삭제하기", url });
+                    setModalState({
+                      state: true,
+                      target: "삭제하기",
+                      url,
+                      cardId,
+                    });
                   }}
                 >
                   삭제하기
