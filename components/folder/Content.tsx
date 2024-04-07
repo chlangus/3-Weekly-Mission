@@ -35,15 +35,11 @@ export default function Content({
     queryClient.invalidateQueries({ queryKey: ["readLinkList"] });
   };
 
-  // 카테고리 누르면 거기있는 아이디를 보내서 카드 띄워주기
-  // const data = useMemo(async () => {
-  //   const data = await getUserFolderLinkList(String(targetFolder.id));
-  //   return data;
-  // }, [targetFolder.id]);
   return (
     <section className={cx("content")}>
       <Modal
         state={modalState}
+        setModalState={setModalState}
         onClick={handleModalCancel}
         folderList={[]}
         link=""

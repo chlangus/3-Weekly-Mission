@@ -9,7 +9,7 @@ type target =
   | "추가하기"
   | "";
 
-export interface Modal {
+export interface ModalData {
   state?: boolean;
   target?: target;
   folderId?: number;
@@ -18,7 +18,7 @@ export interface Modal {
 }
 
 export default function useModal() {
-  const [modalState, setModalState] = useState<Modal>({
+  const [modalState, setModalState] = useState<ModalData>({
     state: false,
     target: "",
     folderId: 0,

@@ -4,7 +4,7 @@ import deleteIcon from "@/public/delete.svg";
 import styles from "./Content.module.css";
 import Image from "next/image";
 import classNames from "classnames/bind";
-import { Modal } from "@/hooks/useModal";
+import { ModalData } from "@/hooks/useModal";
 import { Dispatch, SetStateAction } from "react";
 
 const cx = classNames.bind(styles);
@@ -14,7 +14,7 @@ interface Props {
     title: string;
     id: number;
   };
-  setModalState: Dispatch<SetStateAction<Modal>>;
+  setModalState: Dispatch<SetStateAction<ModalData>>;
 }
 
 export default function TitleBar({ targetFolder, setModalState }: Props) {
@@ -43,6 +43,7 @@ export default function TitleBar({ targetFolder, setModalState }: Props) {
                 state: true,
                 target: "이름 변경",
                 folderName: targetFolder["title"],
+                folderId: targetFolder.id,
               })
             }
           >

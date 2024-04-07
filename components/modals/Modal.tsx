@@ -11,9 +11,10 @@ import AddLinkModal from "./AddLinkModal";
 import FolderDeleteModal from "./FolderDeleteModal";
 import LinkDeleteModal from "./LinkDeleteModal";
 import classNames from "classnames/bind";
-import { Modal } from "@/hooks/useModal";
 import { UserFolder } from "@/api/api";
 import { Case, Switch } from "react-if";
+import { ModalData } from "@/hooks/useModal";
+import { Dispatch, SetStateAction } from "react";
 
 const cx = classNames.bind(styles);
 enum FOLDER_NAME {
@@ -27,15 +28,22 @@ enum FOLDER_NAME {
 }
 
 interface Props {
-  state: Modal;
+  state: ModalData;
+  setModalState: Dispatch<SetStateAction<ModalData>>;
   onClick: () => void;
   link: string;
   folderList: UserFolder[];
 }
 
-export default function Modal({ state, onClick, link, folderList }: Props) {
+export default function Modal({
+  state,
+  setModalState,
+  onClick,
+  link,
+  folderList,
+}: Props) {
   if (typeof window === "undefined") return <></>;
-  
+
   const cancelModal = (e: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
@@ -64,7 +72,7 @@ export default function Modal({ state, onClick, link, folderList }: Props) {
               <NameChangeModal state={state} />
             </Case>
             <Case condition={state["target"] === FOLDER_NAME.FOLDER_DELETE}>
-              <FolderDeleteModal state={state} cancelModal={cancelModal}/>
+              <FolderDeleteModal state={state} setModalState={setModalState} />
             </Case>
             <Case condition={state["target"] === FOLDER_NAME.FOLDER_ADD}>
               <AddFolderModal cancelModal={cancelModal} />
@@ -78,7 +86,12 @@ export default function Modal({ state, onClick, link, folderList }: Props) {
                 FOLDER_NAME.LINK_ADD2
               }
             >
-              <AddLinkModal state={state} data={folderList} link={link} />
+              <AddLinkModal
+                setModalState={setModalState}
+                state={state}
+                data={folderList}
+                link={link}
+              />
             </Case>
           </Switch>
         </div>

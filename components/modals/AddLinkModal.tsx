@@ -1,23 +1,29 @@
-import { UserFolder, createLink } from "@/api/api";
+import { UserFolder } from "@/api/api";
 import styles from "./Modal.module.css";
 import classNames from "classnames/bind";
-import { Modal } from "@/hooks/useModal";
-import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { ModalData } from "@/hooks/useModal";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useAddLink } from "@/hooks/useAddLink";
 
 const cx = classNames.bind(styles);
 
 interface Props {
-  state: Modal;
+  state: ModalData;
   data: UserFolder[];
   link: string;
+  setModalState: Dispatch<SetStateAction<ModalData>>;
 }
-export default function AddLinkModal({ state, data: folderList, link }: Props) {
-  const queryClient = useQueryClient();
+export default function AddLinkModal({
+  state,
+  data: folderList,
+  link,
+  setModalState,
+}: Props) {
+  const addLinkMutation = useAddLink();
   const [folderId, setFolderId] = useState(0);
   const handleClick = () => {
-    createLink(link, folderId);
-    queryClient.refetchQueries();
+    addLinkMutation({ link, folderId });
+    setModalState((prev) => ({ ...prev, state: false }));
   };
   return (
     <>
@@ -26,8 +32,14 @@ export default function AddLinkModal({ state, data: folderList, link }: Props) {
       </h2>
       <h3 className={cx("link-and-folder-name")}>{state["url"] ?? link}</h3>
       <div className={cx("folder-item-wrapper")}>
-        {folderList?.map((folder: any) => (
-          <button key={folder?.id} onClick={() => setFolderId(folder.id)}>
+        {folderList?.map((folder) => (
+          <button
+            key={folder?.id}
+            onClick={() => {
+              setFolderId(folder.id);
+            }}
+            className={cx(folder.id === folderId && "selected", "modal-btn")}
+          >
             <div className={cx("folder-item")}>
               <span className={cx("link-name")}>{folder?.name}</span>
               <span className={cx("link-length")}>

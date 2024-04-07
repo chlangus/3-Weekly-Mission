@@ -22,6 +22,7 @@ export default function AddLinkBar({ folderList }: Props) {
     <div className={cx("form-container")}>
       <Modal
         state={modalState}
+        setModalState={setModalState}
         onClick={handleModalCancel}
         link={inputValue}
         folderList={folderList}

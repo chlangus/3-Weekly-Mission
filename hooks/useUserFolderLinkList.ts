@@ -8,4 +8,3 @@ export const useUserFolderLinkList = (folderId: number) => {
   });
   return userFolderLinkList;
 };
-

@@ -2,8 +2,6 @@ import { AxiosError } from "axios";
 import axios from "./axios";
 
 //테스트 하려고 임시로 저장해놨습니다.
-const Authorization =
-  "Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6IktLNE05TGFmMXkzWEI0M0kiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzEyNTY2NzYzLCJpYXQiOjE3MTE5NjE5NjMsImlzcyI6Imh0dHBzOi8vanB2ZG9weWdibHJlZnpvbmV2ZnEuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjkwZWIzZDg3LTg0ZmUtNDg4ZC05ZmE3LTBlM2JjZmZhNjNlNSIsImVtYWlsIjoidGVzdG1vb0Bjb2RlaXQuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6InRlc3Rtb29AY29kZWl0LmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI5MGViM2Q4Ny04NGZlLTQ4OGQtOWZhNy0wZTNiY2ZmYTYzZTUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTcxMTk2MTk2M31dLCJzZXNzaW9uX2lkIjoiYzI0MGM0Y2EtYzcxMS00NjlmLTk4NjAtNDQ3MDBkZTRhNzhiIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.lUQfycOiSL7bQXLpEIN3i6JOySD-qjYDDvUs_6XO8As";
 
 export interface FolderData {
   id: number;
@@ -14,11 +12,7 @@ export interface FolderData {
 }
 // 폴더 정보
 export async function getUserFolder(folderId: number) {
-  const response = await axios.get(`/folders/${folderId}`, {
-    headers: {
-      Authorization,
-    },
-  });
+  const response = await axios.get(`/folders/${folderId}`);
   if (typeof response.data === "object" && response.data[0])
     return response.data[0];
 
@@ -36,7 +30,7 @@ export interface UserData {
 
 // 유저 정보
 export async function getUser() {
-  const response = await axios.get(`/users`, { headers: { Authorization } });
+  const response = await axios.get(`/users`);
   if (typeof response.data === "object" && response.data[0]) {
     return response.data[0];
   }
@@ -52,48 +46,37 @@ export interface UserFolder {
 }
 // 유저가 가진 폴더 리스트
 export async function getFolderList() {
-  const response = await axios.get(`/folders`, { headers: { Authorization } });
+  const response = await axios.get(`/folders`);
   return response.data;
 }
 
 // 폴더 생성
 export async function createFolder(name: string) {
-  const response = await axios.post(
-    "/folders",
-    {
-      name,
-    },
-    {
-      headers: {
-        Authorization,
-      },
-    }
-  );
+  const response = await axios.post("/folders", {
+    name,
+  });
   return response.data;
 }
 
 // 폴더 삭제
 export async function deleteFolder(folderId: number) {
-  const response = await axios.delete(`/folders/${folderId}`, {
-    headers: { Authorization },
-  });
+  const response = await axios.delete(`/folders/${folderId}`);
   return response.data;
 }
 
+// 폴더 이름 변경
+export async function updateFolder(folderId?: number, name?: string) {
+  const response = await axios.put(`/folders/${folderId}`, {
+    name,
+  });
+  return response.data;
+}
 // 링크 생성
 export async function createLink(url: string, folderId: number) {
-  const response = await axios.post(
-    "/links",
-    {
-      url,
-      folderId,
-    },
-    {
-      headers: {
-        Authorization,
-      },
-    }
-  );
+  const response = await axios.post("/links", {
+    url,
+    folderId,
+  });
   return response.data;
 }
 
@@ -122,9 +105,7 @@ export interface UserLinkData {
 }
 // 유저가 가진 링크 리스트
 export async function getLinkList() {
-  const response = await axios.get(`/links`, {
-    headers: { Authorization },
-  });
+  const response = await axios.get(`/links`);
   return response.data;
 }
 

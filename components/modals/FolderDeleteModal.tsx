@@ -1,20 +1,21 @@
-import { Modal } from "@/hooks/useModal";
+import { ModalData } from "@/hooks/useModal";
 import styles from "./Modal.module.css";
 import classNames from "classnames/bind";
 import { useDeleteFolder } from "@/hooks/useDeleteFolder";
+import { Dispatch, SetStateAction } from "react";
 
 const cx = classNames.bind(styles);
 
 interface Props {
-  state: Modal;
-  cancelModal: any;
+  state: ModalData;
+  setModalState: Dispatch<SetStateAction<ModalData>>;
 }
 
-export default function FolderDeleteModal({ state, cancelModal }: Props) {
+export default function FolderDeleteModal({ state, setModalState }: Props) {
   const deleteMutate = useDeleteFolder();
   const handleClick = () => {
     deleteMutate(Number(state.folderId));
-    cancelModal();
+    setModalState((prev) => ({ ...prev, folderId: 0, state: false }));
   };
   return (
     <>

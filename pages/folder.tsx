@@ -19,7 +19,6 @@ export default function Folder() {
   const user = useUser();
   const folderList = useUserFolderList();
   const [searchValue, setsearchValue] = useState("");
-
   const handleInputChange = (value: string) => {
     setsearchValue(value);
   };

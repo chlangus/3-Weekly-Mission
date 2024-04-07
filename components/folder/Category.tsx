@@ -1,5 +1,5 @@
 import plusImg from "@/public/plus_img.svg";
-import { Modal } from "@/hooks/useModal";
+import { ModalData } from "@/hooks/useModal";
 import Image from "next/image";
 import styles from "./Content.module.css";
 import classNames from "classnames/bind";
@@ -13,7 +13,7 @@ interface Props {
     title: string;
     id: number;
   };
-  setModalState: Dispatch<SetStateAction<Modal>>;
+  setModalState: Dispatch<SetStateAction<ModalData>>;
   handleClick: (title: string, id: number) => void;
   folderList: UserFolder[];
 }
