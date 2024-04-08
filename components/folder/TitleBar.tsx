@@ -55,14 +55,14 @@ export default function TitleBar({
           </button>
           <button
             className={cx("button", "edit-function")}
-            onClick={() =>
+            onClick={() => {
               setModalState({
                 state: true,
                 target: "삭제",
                 folderName: targetFolder["title"],
                 folderId: targetFolder["id"],
-              })
-            }
+              });
+            }}
           >
             <Image src={deleteIcon} alt="deleteIcon" />
             삭제

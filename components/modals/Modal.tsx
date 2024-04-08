@@ -72,7 +72,7 @@ export default function Modal({
               />
             </Case>
             <Case condition={state["target"] === FOLDER_NAME.FOLDER_DELETE}>
-              <FolderDeleteModal state={state} cancelModal={cancelModal} />
+              <FolderDeleteModal state={state} cancelModal={cancelModal} setTargetFolder={setTargetFolder}/>
             </Case>
             <Case condition={state["target"] === FOLDER_NAME.FOLDER_ADD}>
               <AddFolderModal cancelModal={cancelModal} />
